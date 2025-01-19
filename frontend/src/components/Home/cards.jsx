@@ -20,9 +20,9 @@ const Cards = ({ home, setInputDiv, fetchCompleted }) => {
         const fetchTasks = async () => {
             try {
                 const endpoint = fetchCompleted == "CompletedTasks"
-                    ? 'http://localhost:3001/api/v2/get-completed-tasks'
-                    : fetchCompleted == "IncompletedTasks" ? 'http://localhost:3001/api/v2/get-incomplete-task'
-                        : fetchCompleted == "ImportantTasks" ? 'http://localhost:3001/api/v2/getimp-task' : 'http://localhost:3001/api/v2/getall-task';
+                    ? 'https://taskmanager-backendd.onrender.com/api/v2/get-completed-tasks'
+                    : fetchCompleted == "IncompletedTasks" ? 'https://taskmanager-backendd.onrender.com/api/v2/get-incomplete-task'
+                        : fetchCompleted == "ImportantTasks" ? 'https://taskmanager-backendd.onrender.com/api/v2/getimp-task' : 'https://taskmanager-backendd.onrender.com/api/v2/getall-task';
 
                 //console.log("ID=" + headers._id);
 
@@ -44,7 +44,7 @@ const Cards = ({ home, setInputDiv, fetchCompleted }) => {
             const updatedStatus = !task.important;
 
             const response = await axios.put(
-                `http://localhost:3001/api/v2/update-imptask/${taskId}`,
+                `https://taskmanager-backendd.onrender.com/api/v2/update-imptask/${taskId}`,
                 { important: updatedStatus },
                 { headers }
             );
@@ -71,7 +71,7 @@ const Cards = ({ home, setInputDiv, fetchCompleted }) => {
       //  e.preventDefault();
         try {
             const response = await axios.put(
-                `http://localhost:3001/api/v2/update-task/${editTask}`,
+                `https://taskmanager-backendd.onrender.com/api/v2/update-task/${editTask}`,
                 editForm,
                 { headers }
             );
@@ -93,7 +93,7 @@ const Cards = ({ home, setInputDiv, fetchCompleted }) => {
 
     const handleDelete = async (taskId) => {
         try {
-            const response = await axios.delete(`http://localhost:3001/api/v2/delete-task/${taskId}`, {
+            const response = await axios.delete(`https://taskmanager-backendd.onrender.com/api/v2/delete-task/${taskId}`, {
                 headers,
             });
 
