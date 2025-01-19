@@ -120,7 +120,7 @@ const Cards = ({ home, setInputDiv, fetchCompleted }) => {
     
             // Make API call to update task status
             const response = await axios.put(
-                `http://localhost:3001/api/v2/update-status/${taskId}`,
+                `https://taskmanager-backendd.onrender.com/api/v2/update-status/${taskId}`,
                 { complete: updatedStatus },
                 { headers }
             );
