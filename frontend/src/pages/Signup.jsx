@@ -20,7 +20,7 @@ const Signup = () => {
             if(data.username === "" || data.email === "" || data.password === ""){
                 alert("All Fields Are Required")
             }else{
-                const response=await axios.post("http://localhost:3001/api/v1/sign-in",data);
+                const response=await axios.post("https://taskmanager-backendd.onrender.com/api/v1/sign-in",data);
                 setData({username:"",email:"",password:""})
                // console.log(response);
                 history("/login")
