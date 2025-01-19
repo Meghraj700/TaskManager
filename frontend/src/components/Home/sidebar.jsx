@@ -59,8 +59,8 @@ const Sidebar = () => {
             try {
                 console.log("adkjskfjs"+headers.id,+ " "+headers.authorization)
 
-                const response = await axios.get('http://localhost:3001/api/v2/getall-task', { headers });
-                const user = await axios.get(`http://localhost:3001/api/v1/get-user-detail`, { headers });
+                const response = await axios.get('https://taskmanager-backendd.onrender.com/api/v2/getall-task', { headers });
+                const user = await axios.get(`https://taskmanager-backendd.onrender.com/api/v1/get-user-detail`, { headers });
                 
                 console.log((user))
                 setUserEmail(user.data.result.email);  // Assuming the API returns user info with email
