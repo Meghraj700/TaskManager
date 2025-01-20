@@ -7,10 +7,11 @@ function Home() {
         <div className='w-1/6 border border-gray-500 rounded p-4 flex flex-col justify-between'>
         <Sidebar />
         </div>
-        <div className='w-5/6 border border-gray-500 rounded p-4'>
+        <div className='w-full lg:w-5/6 border border-gray-500 rounded p-4 overflow-y-auto'>
         <Outlet />
         </div>
     </div>
+    
   )
 }
 

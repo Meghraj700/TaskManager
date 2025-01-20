@@ -57,15 +57,12 @@ const Sidebar = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                console.log("adkjskfjs"+headers.id,+ " "+headers.authorization)
 
-                const response = await axios.get('https://taskmanager-backendd.onrender.com/api/v2/getall-task', { headers });
-                const user = await axios.get(`https://taskmanager-backendd.onrender.com/api/v1/get-user-detail`, { headers });
+                const response = await axios.get('http://localhost:3001/api/v2/getall-task', { headers });
+                const user = await axios.get(`http://localhost:3001/api/v1/get-user-detail`, { headers });
                 
-                console.log((user))
                 setUserEmail(user.data.result.email);  // Assuming the API returns user info with email
                 setUsername(user.data.result.username)
-                console.log(response.data); // Log the user data for debugging
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -80,28 +77,35 @@ const Sidebar = () => {
     return (
         <>
             <div>
-            <h2 className='text-xl font-semibold'>{username}</h2>  {/* Display dynamic username */}
-            <h4 className='mb-1 text-gray-400'>{userEmail}</h4>  {/* Display dynamic email */}
+            <div className="flex flex-col w-full">
+    <h2 className="text-xl font-semibold truncate">{username}</h2> {/* Display dynamic username */}
+    <h4 className="mb-1 text-gray-400 truncate">{userEmail}</h4> {/* Display dynamic email */}
+</div>
+
             </div>
-            <div>
-                {data.map((item) => (
-                    <Link
-                        to={item.link}
-                        key={item.id} // Use unique id as key
-                        className='my-2 flex items-center hover:bg-gray-500 rounded transition duration-200'
-                    >
-                        {item.icon} {item.title}
-                    </Link>
-                ))}
-            </div>
-            <div>
-                <button
-                    className='bg-gray-600 w-full p-2 rounded'
-                    onClick={logout}
-                >
-                    Logout
-                </button>
-            </div>
+            <div className="flex flex-col h-full">
+    <div className="flex-1 overflow-hidden">
+        {data.map((item) => (
+            <Link
+                to={item.link}
+                key={item.id} // Use unique id as key
+                className="my-2 flex items-center hover:bg-gray-500 rounded transition duration-200 p-5 bg-gray-800"
+            >
+                {item.icon} {item.title}
+            </Link>
+        ))}
+    </div>
+
+    <div className="mt-auto">
+        <button
+            className="bg-gray-600 w-full p-2 rounded"
+            onClick={logout}
+        >
+            Logout
+        </button>
+    </div>
+</div>
+
         </>
     );
 };

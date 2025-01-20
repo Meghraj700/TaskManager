@@ -28,7 +28,7 @@ const InputData = ({ InputDiv, setInputDiv }) => {
   };
   try {
     const response = await axios.post(
-      'https://taskmanager-backendd.onrender.com/api/v2/create-task', 
+      'http://localhost:3001/api/v2/create-task', 
       taskData, 
       { headers }
     );
@@ -50,7 +50,7 @@ const InputData = ({ InputDiv, setInputDiv }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://taskmanager-backendd.onrender.com/api/v2/create-task');
+        const response = await axios.get('http://localhost:3001/api/v2/create-task');
         console.log(response.data); // Log fetched tasks for debugging
       } catch (error) {
         console.error('Error fetching tasks:', error);

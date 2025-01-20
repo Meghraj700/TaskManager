@@ -13,6 +13,7 @@ const Login=()=> {
         history("/")
     }
         const [data,setData]=useState({username:"",email:"",password:""});
+        const [error, setError] = useState("");
         
     const change=(e)=>{
         const {name,value}=e.target;
@@ -22,8 +23,9 @@ const Login=()=> {
         try{
             if(data.username === "" || data.password === ""){
                 alert("All Fields Are Required")
-            }else{
-                const response=await axios.post("https://taskmanager-backendd.onrender.com/api/v1/log-in",data);
+            }
+            else{
+                const response=await axios.post("http://localhost:3001/api/v1/log-in",data);
                 setData({username:"",password:""})
                 localStorage.setItem("id",response.data.id)
                 localStorage.setItem("token",response.data.token)
@@ -31,7 +33,11 @@ const Login=()=> {
                 history("/")
             }
         }catch(err){
-            console.log(err.response.data.message);
+            if (err.response && err.response.data.message) {
+                setError(err.response.data.message);
+            } else {
+                setError("An error occurred. Please try again later.");
+            }
             
         }   
         
@@ -41,6 +47,7 @@ const Login=()=> {
     <div className=' h-[98vh] flex items-center justify-center'>
     <div className='p-4 w-2/6 rounded bg-gray-800'>
     <div className='text-2xl font-semibold'> Login</div>
+    {error && <div className="text-red-500 my-2">{error}</div>}
     <input type="text" placeholder='UserName' className='bg-gray-700 px-3 py-2 my-3 w-full rounded'
     name="username"
     value={data.username}

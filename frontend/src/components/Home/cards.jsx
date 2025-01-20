@@ -20,9 +20,9 @@ const Cards = ({ home, setInputDiv, fetchCompleted }) => {
         const fetchTasks = async () => {
             try {
                 const endpoint = fetchCompleted == "CompletedTasks"
-                    ? 'https://taskmanager-backendd.onrender.com/api/v2/get-completed-tasks'
-                    : fetchCompleted == "IncompletedTasks" ? 'https://taskmanager-backendd.onrender.com/api/v2/get-incomplete-task'
-                        : fetchCompleted == "ImportantTasks" ? 'https://taskmanager-backendd.onrender.com/api/v2/getimp-task' : 'https://taskmanager-backendd.onrender.com/api/v2/getall-task';
+                    ? 'http://localhost:3001/api/v2/get-completed-tasks'
+                    : fetchCompleted == "IncompletedTasks" ? 'http://localhost:3001/api/v2/get-incomplete-task'
+                        : fetchCompleted == "ImportantTasks" ? 'http://localhost:3001/api/v2/getimp-task' : 'http://localhost:3001/api/v2/getall-task';
 
                 //console.log("ID=" + headers._id);
 
@@ -44,7 +44,7 @@ const Cards = ({ home, setInputDiv, fetchCompleted }) => {
             const updatedStatus = !task.important;
 
             const response = await axios.put(
-                `https://taskmanager-backendd.onrender.com/api/v2/update-imptask/${taskId}`,
+                `http://localhost:3001/api/v2/update-imptask/${taskId}`,
                 { important: updatedStatus },
                 { headers }
             );
@@ -68,10 +68,10 @@ const Cards = ({ home, setInputDiv, fetchCompleted }) => {
     };
 
     const submitEdit = async (e) => {
-      //  e.preventDefault();
+        //  e.preventDefault();
         try {
             const response = await axios.put(
-                `https://taskmanager-backendd.onrender.com/api/v2/update-task/${editTask}`,
+                `http://localhost:3001/api/v2/update-task/${editTask}`,
                 editForm,
                 { headers }
             );
@@ -85,7 +85,7 @@ const Cards = ({ home, setInputDiv, fetchCompleted }) => {
                 console.log("Task updated successfully:", response.data.message);
                 setEditTask(null);
             }
-            
+
         } catch (error) {
             console.error("Error updating task:", error);
         }
@@ -93,7 +93,7 @@ const Cards = ({ home, setInputDiv, fetchCompleted }) => {
 
     const handleDelete = async (taskId) => {
         try {
-            const response = await axios.delete(`https://taskmanager-backendd.onrender.com/api/v2/delete-task/${taskId}`, {
+            const response = await axios.delete(`http://localhost:3001/api/v2/delete-task/${taskId}`, {
                 headers,
             });
 
@@ -117,14 +117,14 @@ const Cards = ({ home, setInputDiv, fetchCompleted }) => {
             // Find the task in the local state
             const task = tasks.find((t) => t._id === taskId);
             const updatedStatus = !task.complete; // Toggle the `complete` status
-    
+
             // Make API call to update task status
             const response = await axios.put(
-                `https://taskmanager-backendd.onrender.com/api/v2/update-status/${taskId}`,
+                `http://localhost:3001/api/v2/update-status/${taskId}`,
                 { complete: updatedStatus },
                 { headers }
             );
-    
+
             if (response.status === 200) {
                 // Update the local state to reflect the change
                 setTasks((prevTasks) =>
@@ -138,11 +138,11 @@ const Cards = ({ home, setInputDiv, fetchCompleted }) => {
             console.error("Error updating task completion status:", error);
         }
     };
-    
+
 
     return (
         <>
-            {editTask && (
+         {editTask && (
                 <div className="modal fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <form onSubmit={submitEdit} className="bg-gray-800 p-4 rounded-sm shadow-lg w-1/3">
                         <h2 className="text-2xl mb-4 text-white font-semibold">Edit Task</h2>
@@ -156,7 +156,7 @@ const Cards = ({ home, setInputDiv, fetchCompleted }) => {
                         <textarea
                             value={editForm.desc}
                             onChange={(e) => setEditForm({ ...editForm, desc: e.target.value })}
-                            className="w-full mb-4 p-2 rounded text-black font-semibold"
+                            className="w-full h-40 mb-4 p-2 rounded text-black font-semibold"
                             placeholder="Description"
                         ></textarea>
                         <div className="flex justify-end">
@@ -170,55 +170,66 @@ const Cards = ({ home, setInputDiv, fetchCompleted }) => {
                     </form>
                 </div>
             )}
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+  {tasks.length > 0 ? (
+    tasks.map((item, i) => (
+      <div
+        key={i}
+        className="flex flex-col justify-between bg-gray-800 rounded-sm p-4 transition-transform transform hover:scale-105 overflow-hidden"
+      >
+        <div>
+          <h3 className="text-xl font-semibold break-words">{item.title}</h3>
+          <p
+  className="text-gray-300 my-2 whitespace-pre-wrap break-words overflow-hidden max-h-40 overflow-y-auto"
+>
+  {item.desc}
+</p>
 
-            <div className="grid grid-cols-3 gap-4 p-4">
-                {tasks.length > 0 ? (
-                    tasks.map((item, i) => (
-                        <div key={i} className="flex flex-col justify-between bg-gray-800 rounded-sm p-4">
-                            <div>
-                                <h3 className="text-xl font-semibold">{item.title}</h3>
-                                <p className="text-gray-300 my-2">{item.desc}</p>
-                            </div>
-                            <div className="mt-4 w-full flex items-center">
-                                <button
-                                    onClick={() => toggleComplete(item._id)}
-                                    className={`${item.complete ? "bg-green-600" : "bg-red-400"} rounded p-2 w-3/6`}
-                                >
-                                    {item.complete ? "Complete" : "Pending"}
-                                </button>
+        </div>
+        <div className="mt-4 w-full flex items-center">
+          <button
+            onClick={() => toggleComplete(item._id)}
+            className={`${
+              item.complete ? "bg-green-600" : "bg-red-400"
+            } rounded p-2 w-full md:w-3/6`}
+          >
+            {item.complete ? "Complete" : "Pending"}
+          </button>
+          <div className="text-white p-2 w-full md:w-3/6 text-2xl font-semibold flex justify-around">
+            <button
+              onClick={() => handleImportant(item._id)}
+              className={`${
+                item.important ? "text-red-500 " : "text-gray-500"
+              }`}
+            >
+              <CiHeart />
+            </button>
+            <button onClick={() => handleEdit(item)}>
+              <FaEdit />
+            </button>
+            <button onClick={() => handleDelete(item._id)}>
+              <MdDelete />
+            </button>
+          </div>
+        </div>
+      </div>
+    ))
+  ) : (
+    <div className="col-span-full text-center text-gray-400">No tasks found.</div>
+  )}
+
+  {home === "false" && (
+    <button
+      className="flex flex-col justify-center items-center bg-gray-800 rounded-sm p-4 hover:scale-105 hover:cursor-pointer transition-all duration-300"
+      onClick={() => setInputDiv("fixed")}
+    >
+      <IoMdAddCircle className="text-5xl" />
+      <h2 className="text-2xl text-gray-300">Add Task</h2>
+    </button>
+  )}
+</div>
 
 
-                                <div className="text-white p-2 w-3/6 text-2xl font-semibold flex justify-around">
-                                    <button
-                                        onClick={() => handleImportant(item._id)}
-                                        className={`${item.important ? "text-red-500 " : "text-gray-500"}`}
-                                    >
-                                        <CiHeart />
-                                    </button>
-                                    <button onClick={() => handleEdit(item)}>
-                                        <FaEdit />
-                                    </button>
-                                    <button onClick={() => handleDelete(item._id)}>
-                                        <MdDelete />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <div>No tasks found.</div>
-                )}
-
-                {home === "false" && (
-                    <button
-                        className="flex flex-col justify-center items-center bg-gray-800 rounded-sm p-4 hover:scale-105 hover:cursor-pointer transition-all duration-300"
-                        onClick={() => setInputDiv("fixed")}
-                    >
-                        <IoMdAddCircle className="text-5xl" />
-                        <h2 className="text-2xl text-gray-300">Add Task</h2>
-                    </button>
-                )}
-            </div>
         </>
     );
 };
