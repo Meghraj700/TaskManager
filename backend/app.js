@@ -10,6 +10,12 @@ app.use(cors());
 app.use(express.json())
 app.use(bodyParser.json());
 
+app.use(cors({
+    origin: 'http://localhost:3000', // Replace with the client's URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
+    credentials: true // Include cookies if needed
+}));
+
 app.use("/api/v1",UserAPI);
 app.use("/api/v2",TaskAPI);
 // app.use("/",(req,res)=>{
